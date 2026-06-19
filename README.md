@@ -4,6 +4,8 @@
 
 本仓库在笔记基础上构建了一个**交互式学习网站**，把 15 讲、共 **117 个知识点**整理为可检索、可切换难度的形式。
 
+![网站预览](site/assets/img/screenshot.png)
+
 ## 在线访问
 
 GitHub Pages：<https://cimeguy.github.io/Advanced-Probability-Theory/>
@@ -53,33 +55,39 @@ GitHub Pages：<https://cimeguy.github.io/Advanced-Probability-Theory/>
 
 ```
 .
-├── site/                       # 网站源码（开发用）
+├── site/                       # 网站源码（唯一来源，直接部署）
 │   ├── index.html
 │   ├── assets/
 │   │   ├── app.js              # 轻量 Markdown 渲染 + 导航 + 搜索
-│   │   └── style.css
+│   │   ├── style.css
+│   │   └── img/screenshot.png  # 首页预览图
 │   └── data/
 │       ├── structure.js        # 课程骨架：讲次 → 知识点(id/title/tags)
 │       ├── original.js         # 原版内容（window.V_original）
 │       ├── cs.js               # CS专业版（window.V_cs）
 │       └── freshman.js         # 大一新生版（window.V_freshman）
-├── docs/                       # site/ 的副本，供 GitHub Pages 部署
+├── .github/workflows/deploy.yml  # 推送即自动部署到 GitHub Pages
 ├── skill/                      # 配套可检索技能与课程地图
 └── md文件/                     # 原始讲义 Markdown（第一~十五讲）
 ```
 
 三个版本的数据文件按知识点 `id`（如 `kp-7-3`）对齐；新增内容时三份需保持 `id` 一致。
 
-## 部署（GitHub Pages）
+## 部署（GitHub Pages · 自动）
 
-GitHub Pages 仅支持根目录或 `/docs` 部署，故 `docs/` 为 `site/` 的副本：
+已配置 GitHub Actions 工作流（`.github/workflows/deploy.yml`），**每次 push 改动 `site/` 会自动部署**，无需手动操作。
 
+首次启用（仅一次）：
 1. 仓库 **Settings → Pages**
-2. **Source** 选 *Deploy from a branch*
-3. **Branch** 选 `master`，文件夹选 `/docs`，保存
+2. **Source** 选 **GitHub Actions**
 
-更新内容后同步 `docs/`：
+之后只需正常修改 `site/` 下文件并 `git push`，Actions 会自动构建并上线。可在仓库 **Actions** 标签查看部署状态。
 
+更新首页预览图：
 ```bash
-rm -rf docs && cp -R site docs && git add -A && git commit -m "更新内容" && git push
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+  --headless=new --window-size=1440,900 --virtual-time-budget=8000 \
+  --screenshot="site/assets/img/screenshot.png" \
+  "file://$(pwd)/site/index.html"
 ```
+
