@@ -100,6 +100,11 @@ main {
   overflow-x: auto; border: 1px solid var(--border);
 }
 .kp-body pre code { background: none; padding: 0; color: var(--text); }
+.kp-body figure.diagram {
+  margin: 18px 0; padding: 14px 16px; text-align: center;
+  background: var(--panel-2); border: 1px solid var(--border); border-radius: 10px;
+}
+.kp-body figure.diagram svg { max-width: 100%; height: auto; }
 .kp-body strong { color: #fff; }
 .kp-body ul, .kp-body ol { padding-left: 22px; }
 .kp-body .katex-display { overflow-x: auto; overflow-y: hidden; padding: 4px 0; }
